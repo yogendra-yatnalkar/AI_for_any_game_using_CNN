@@ -1,0 +1,4 @@
+Things to remember when capturing the data :
+1. start the screen capture
+2. save the photo only when a key is pressed
+3. first save the screenshot and then save the key and the name of the screen-shot saved in a csv file.
