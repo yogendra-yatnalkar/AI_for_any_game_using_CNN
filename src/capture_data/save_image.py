@@ -4,10 +4,8 @@ import time
 
 class SaveImage:
 
-    path = None # directory path where the image needs to be saved
-
-    def __init__(self, path):
-        self.path = path
+    def __init__(self, path = None):
+        self.path = path # directory path where the image needs to be saved
 
     def get_image_name(self):
         files_list = os.listdir(self.path)
@@ -20,10 +18,10 @@ class SaveImage:
         image_name = self.get_image_name()
         cv2.imwrite(os.path.join(self.path, image_name), image_np_array)
 
-    def display_image(self, image_np_array):
-        cv2.namedWindow('test image',cv2.WINDOW_NORMAL)
-        cv2.imshow('test image', img)
-        cv2.resizeWindow('test image', 400, 400)
+    def display_image(self,image_name, image_np_array):
+        cv2.namedWindow(image_name,cv2.WINDOW_NORMAL)
+        cv2.imshow(image_name, img)
+        # cv2.resizeWindow(image_name, 400, 400)
         if cv2.waitKey(0) & 0xFF == ord('q'):
             cv2.destroyAllWindows()
 
@@ -37,4 +35,4 @@ if __name__ == "__main__": # for testing this file
     obj.save_image(img)
     end_time = time.time()
     print("Time Required : ", end_time - start_time)
-    obj.display_image(img)
+    obj.display_image('test_img',img)
