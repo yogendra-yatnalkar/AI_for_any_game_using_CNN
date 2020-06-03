@@ -1,3 +1,5 @@
 .vscode/
-/src/game_dataset/*
+/src/game_dataset/*.png
+/src/game_dataset/*.jpeg
+/src/game_dataset/*.jpg
 /src/capture_data/__pycache__/
