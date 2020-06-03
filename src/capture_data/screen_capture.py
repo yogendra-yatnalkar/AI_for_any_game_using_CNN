@@ -4,24 +4,19 @@ import numpy as np
 
 class ScreenCapture:
 
-    x_origin, y_origin = 0,0
-    x_cord, y_cord = None, None
-
-    def __init__(self, x_cord, y_cord): # Screen Capture will always start from the top-left corner
-        self.x_cord = x_cord
-        self.y_cord = y_cord
-
-    def change_origin(self, x,y):
-        self.x_origin = x
-        self.y_origin = y
+    def __init__(self, x_ul, y_ul, x_br, y_br): 
+        self.x_ul = x_ul
+        self.y_ul = y_ul
+        self.x_br = x_br
+        self.y_br = y_br
 
     def image_grab(self):
-        screen =  np.array(ImageGrab.grab(bbox=(self.x_origin,self.y_origin,self.x_cord,self.y_cord)))
+        screen =  np.array(ImageGrab.grab(bbox=(self.x_ul,self.y_ul,self.x_br,self.y_br)))
         screen = cv2.cvtColor(screen,cv2.COLOR_RGB2BGR)
         return screen
 
 if __name__ == "__main__": # Testing this file
-    obj = ScreenCapture(640,480)
+    obj = ScreenCapture(0,0,640,480)
     from save_image import SaveImage
     save_obj = SaveImage('../game_dataset/')
     print(save_obj.get_image_name())
@@ -32,7 +27,7 @@ if __name__ == "__main__": # Testing this file
 
         cv2.namedWindow('scanned image',cv2.WINDOW_NORMAL)
         cv2.imshow('scanned image', screen)
-        cv2.resizeWindow('scanned image', obj.x_cord, obj.y_cord)
+        cv2.resizeWindow('scanned image', obj.x_br-obj.x_ul, obj.y_br-obj.y_ul)
         if cv2.waitKey(25) & 0xFF == ord('q'):
             cv2.destroyAllWindows()
             flag = 1

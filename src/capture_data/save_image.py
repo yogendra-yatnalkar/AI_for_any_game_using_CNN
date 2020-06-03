@@ -17,6 +17,7 @@ class SaveImage:
     def save_image(self, image_np_array): # numpy array of the image to be saved
         image_name = self.get_image_name()
         cv2.imwrite(os.path.join(self.path, image_name), image_np_array)
+        return image_name
 
     def display_image(self,image_name, image_np_array):
         cv2.namedWindow(image_name,cv2.WINDOW_NORMAL)
