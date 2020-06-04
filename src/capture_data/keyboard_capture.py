@@ -13,29 +13,27 @@ class KeyboardCapture:
         # x_ul, y_ul --> x,y coordinates of upper left corner
         # x_br, y_br --> x,y coordinates of bottom right corner
         self.key_pressed = set()
-        # action_df --> DataFrame where image and the action will be saved. Conver later to .csv
-        self.action_df = pd.DataFrame(columns=['image_name','action'])
+        self.data_set = []
         self.sc_cap_obj = ScreenCapture(x_ul, y_ul, x_br, y_br)
         # sc_cap_obj --> screen capture object
         self.sv_file_obj = SaveFile(save_path) 
-        self.save_path = save_path
         # sv_file_obj --> save file object
 
     def on_press(self, key):
-        # if(key != keyboard.Key.esc):
-        self.key_pressed.add(key)
-        sc_grab = self.sc_cap_obj.image_grab() # screen grab
-        img_name = self.sv_file_obj.save_image(sc_grab)  # save the screen to disk
-        last_row = len(self.action_df)
-        print(last_row)
-        self.action_df.loc[last_row] = [img_name,self.key_pressed]
-        print(img_name,self.key_pressed)
-        print('\n',self.action_df)
+        if(key != keyboard.Key.esc):
+            self.key_pressed.add(key)
+            sc_grab = self.sc_cap_obj.image_grab() # screen grab
+            img_name = self.sv_file_obj.save_image(sc_grab)  # save the screen to disk
+            key_pressed_list = list(self.key_pressed)
+            self.data_set.append({'image_name': img_name, 'action': key_pressed_list})
+            key_pressed_list = []
+            print(img_name, self.key_pressed)
 
     def on_release(self,key):
         if(key == keyboard.Key.esc):
             # Stop listener
-            self.sv_file_obj.save_df(self.action_df)
+            data_set_df = pd.DataFrame(self.data_set, columns = ['image_name','action']) 
+            self.sv_file_obj.save_df(data_set_df)
             return False
         if(key in self.key_pressed):
             self.key_pressed.remove(key)
@@ -58,6 +56,7 @@ if __name__ == "__main__":
     except BaseException as error:
         print("Unexpected error : ",error)
         print("The current created dataset will be cleared")
+        # future code : ''' Write code to delete the images saved in the current session in utility package '''
     
     end_time = time.time()
     print("Time required for execution : ", end_time - start_time)
