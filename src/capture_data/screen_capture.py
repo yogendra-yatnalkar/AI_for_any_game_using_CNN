@@ -17,14 +17,13 @@ class ScreenCapture:
 
 if __name__ == "__main__": # Testing this file
     obj = ScreenCapture(0,0,640,480)
-    from save_image import SaveImage
-    save_obj = SaveImage('../game_dataset/')
+    from save_file import SaveFile
+    save_obj = SaveFile('../game_dataset/')
     print(save_obj.get_image_name())
 
     flag = 0
     while(flag == 0):
         screen = obj.image_grab()
-
         cv2.namedWindow('scanned image',cv2.WINDOW_NORMAL)
         cv2.imshow('scanned image', screen)
         cv2.resizeWindow('scanned image', obj.x_br-obj.x_ul, obj.y_br-obj.y_ul)

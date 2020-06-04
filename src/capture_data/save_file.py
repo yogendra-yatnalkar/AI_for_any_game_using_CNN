@@ -2,7 +2,7 @@ import os
 import cv2
 import time
 
-class SaveImage:
+class SaveFile:
 
     def __init__(self, path = None):
         self.path = path # directory path where the image needs to be saved
@@ -26,10 +26,15 @@ class SaveImage:
         if cv2.waitKey(0) & 0xFF == ord('q'):
             cv2.destroyAllWindows()
 
+    def save_df(self, pd_df): # pd_df --> pandas dataframe
+        save_df_path = os.path.dirname(self.path) 
+        # storing to the parent folder of images
+        pd_df.to_csv(os.path.join(save_df_path, 'dataset.csv'), index = False)
+            # save the in-memory df to csv
 
 if __name__ == "__main__": # for testing this file
     start_time = time.time()
-    obj = SaveImage('../game_dataset/')
+    obj = SaveFile('../game_dataset/')
     img = cv2.imread('test/test_image.jpg')
     img_name = obj.get_image_name()
     print(img_name)
