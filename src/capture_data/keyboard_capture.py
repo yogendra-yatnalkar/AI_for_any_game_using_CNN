@@ -5,6 +5,8 @@ import time
 import pandas as pd
 from save_file import SaveFile
 from screen_capture import ScreenCapture
+
+# should be in future main
 from utility import Utility
 
 class KeyboardCapture:
@@ -18,6 +20,7 @@ class KeyboardCapture:
         # sc_cap_obj --> screen capture object
         self.sv_file_obj = SaveFile(save_path) 
         # sv_file_obj --> save file object
+        self.save_path = save_path
 
     def on_press(self, key):
         if(key != keyboard.Key.esc):
@@ -39,12 +42,16 @@ class KeyboardCapture:
             self.key_pressed.remove(key)
 
 if __name__ == "__main__":
-    start_time = time.time()
+    while(input("Press 's' to start the program: ") != 's'):
+        time.sleep(0.1)
+
     util = Utility()
     x0,y0,x1,y1 = util.get_coordinates() #returns 4 coordinates
     # The module will start after a defined dalay
     delay_time = 3
     util.generate_delay(delay_time)
+
+    start_time = time.time()
     save_img_path = 'D:/Yogendra D/AI_for_any_game_using_CNN/src/game_dataset'
     obj = KeyboardCapture(x0,y0,x1,y1,save_img_path)
 
@@ -53,10 +60,12 @@ if __name__ == "__main__":
         on_press=obj.on_press,
         on_release=obj.on_release)
         listener.run()
+        # delete the below line later
+        util.delete_temp_files(obj.data_set, obj.save_path)
     except BaseException as error:
         print("Unexpected error : ",error)
         print("The current created dataset will be cleared")
-        # future code : ''' Write code to delete the images saved in the current session in utility package '''
+        util.delete_temp_files(obj.data_set, obj.save_path)
     
     end_time = time.time()
     print("Time required for execution : ", end_time - start_time)

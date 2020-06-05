@@ -29,7 +29,7 @@ class SaveFile:
     def save_df(self, pd_df): # pd_df --> pandas dataframe
         save_df_path = os.path.dirname(self.path) 
         # storing to the parent folder of images
-        pd_df.to_csv(os.path.join(save_df_path, 'dataset.csv'), index = False)
+        pd_df.to_csv(os.path.join(save_df_path, 'temp.csv'), index = False)
             # save the in-memory df to csv
 
 if __name__ == "__main__": # for testing this file
