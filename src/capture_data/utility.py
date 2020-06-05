@@ -32,17 +32,29 @@ class Utility:
                 if(img_name in files):
                     os.remove(os.path.join(ds_path,img_name))
                     print(img_name," - Deleted")
-        csv_save_path = os.path.dirname(ds_path)
-        # Also delete temp.csv if created
-        files = set(os.listdir(csv_save_path))
-        if('temp.csv' in files):
-            os.remove(os.path.join(csv_save_path,'temp.csv'))
-            print("temp.csv - Deleted")
+            csv_save_path = os.path.dirname(ds_path)
+            # Also delete temp.csv if created
+            files = set(os.listdir(csv_save_path))
+            if('temp.csv' in files):
+                os.remove(os.path.join(csv_save_path, 'temp.csv'))
+                print("temp.csv - Deleted")
         else:
             print("Path does not exist")
 
-    def merge_temp_with_ds(sef):
-        # merge temp.csv with dataset.csv
-        pass 
+    # func to merge temp.csv with dataset.csv
+    def merge_temp_ds(self, ds_path): 
+        csv_save_path = os.path.dirname(ds_path) # csv files are stored in parent folder of dataset folder
+        df_temp = pd.read_csv(os.path.join(csv_save_path, 'temp.csv'))  # data_fram of temp.csv
+        df_ds = pd.read_csv(os.path.join(csv_save_path, 'dataset.csv')) # data_frame of dataset.csv
+        df_ds = df_ds.append(df_temp, sort = False) 
+        print('Two CSV files merged')
 
+        # Saving the merged data_frame
+        df_ds.to_csv(os.path.join(csv_save_path, 'dataset.csv'), index = False)
+        print('Dataset.csv Saved')
 
+        # Deleting the temp.csv
+        files = set(os.listdir(csv_save_path))
+        if('temp.csv' in files):
+            os.remove(os.path.join(csv_save_path, 'temp.csv'))
+            print("temp.csv - Deleted")
