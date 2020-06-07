@@ -6,6 +6,8 @@ class SaveFile:
 
     def __init__(self, path = None):
         self.path = path # directory path where the image needs to be saved
+        self.height = 700
+        self.width = 700
 
     def get_image_name(self):
         files_list = os.listdir(self.path)
@@ -13,9 +15,14 @@ class SaveFile:
         files_list = []
         img_name = str(dir_len + 1) + '.png'
         return img_name
+
+    def set_dimensions(self,ht,wt):
+        self.height = ht
+        self.width = wt
     
     def save_image(self, image_np_array): # numpy array of the image to be saved
         image_name = self.get_image_name()
+        cv2.resize(image_np_array, (self.width, self.height))
         cv2.imwrite(os.path.join(self.path, image_name), image_np_array)
         return image_name
 
@@ -41,4 +48,4 @@ if __name__ == "__main__": # for testing this file
     obj.save_image(img)
     end_time = time.time()
     print("Time Required : ", end_time - start_time)
-    obj.display_image('test_img',img)
+    obj.display_image('test_img',img)   
