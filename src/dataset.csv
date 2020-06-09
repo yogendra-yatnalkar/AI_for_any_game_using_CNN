@@ -1,7 +1,5 @@
 image_name,action
 1.png,[<Key.enter: <13>>]
-2.png,['w']
-3.png,['w']
 4.png,"['d', 'w']"
 5.png,['w']
 7.png,['d']
@@ -121,7 +119,6 @@ image_name,action
 132.png,['w']
 133.png,['w']
 134.png,['w']
-135.png,['w']
 136.png,['w']
 137.png,['a']
 138.png,['w']

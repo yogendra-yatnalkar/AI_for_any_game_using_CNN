@@ -12,7 +12,6 @@ class RemoveDuplicate:
         self.count_corrupt = 0
         self.csv_file_path = csv_file_path
         self.csv_file_name = csv_file_name
-        print(img_ds_path)
 
     def rm_duplicate_img(self):
         if(os.path.exists(self.csv_file_path)):
@@ -22,10 +21,11 @@ class RemoveDuplicate:
 
                 for i in range(len(ds_df['image_name'])):
                     img_name = ds_df['image_name'][i]
-                    print(img_name)
 
                     if(img_name not in img_db):
-                        print('\n',ds_df.loc[i], '--- REMOVED from csv file---' ,'\n')
+                        # print('\n',ds_df['image_name'].iloc[i],ds_df['action'].iloc[i], '--- REMOVED from csv file---' ,'\n')
+                        print('\n Index : ',i ,'--- REMOVED from csv file---\n')
+
                         ds_df.drop(i, axis=0, inplace = True)
                         self.count_corrupt += 1
                     else:
@@ -33,21 +33,21 @@ class RemoveDuplicate:
                         hash = imagehash.average_hash(img)
                         if(hash in self.hash_db):
                             os.remove(os.path.join(self.img_ds_path,img_name))
-                            ds_df.drop(i)
+                            ds_df.drop(i, axis=0, inplace = True)
                             print('\n',img_name, '--- REMOVED from dataset and csv file ---','\n')
                             self.count_duplicate += 1
                         else:
                             self.hash_db.add(hash)
+                            print('Checked: ',img_name)
                         img = None
                         img_db.remove(img_name)
 
                 if(len(img_db) != 0):
                     for img_name in img_db:
-                        print(img_name)
                         os.remove(os.path.join(self.img_ds_path,img_name))
                         print('\n',img_name, '--- REMOVED from dataset ---','\n')
 
-                print('\n"No. of corrupted csv entries found and deleted : ',self.count_duplicate)
+                print('\n"No. of corrupted csv entries found and deleted : ',self.count_corrupt)
                 print('\n"No. of duplicate images found and deleted : ',self.count_duplicate)
                 print('\nNo of unaccounted files : ',len(img_db))
 
