@@ -1,19 +1,65 @@
 from PIL import Image
 import imagehash
+import os
+import pandas as pd
 
-class RmDuplicate:
+class RemoveDuplicate:
     
-    def __init__(self,path):
-        self.path = path
+    def __init__(self,img_ds_path,csv_file_path,csv_file_name = 'dataset.csv'):
+        self.img_ds_path = img_ds_path
         self.hash_db = set()
+        self.count_duplicate = 0
+        self.count_corrupt = 0
+        self.csv_file_path = csv_file_path
+        self.csv_file_name = csv_file_name
+        print(img_ds_path)
 
-    def remove_img(self):
-        img_db = os.listdir(self.path)
-        for img_name in image_db:
-            img = Image.open('')
-            hash = imagehash.averag_hash(img)
-            if(hash in self.hash_db):
-                os.remove('')
+    def rm_duplicate_img(self):
+        if(os.path.exists(self.csv_file_path)):
+            ds_df = pd.read_csv(os.path.join(self.csv_file_path,self.csv_file_name))
+            if(os.path.exists(self.img_ds_path)):
+                img_db = os.listdir(self.img_ds_path)
+
+                for i in range(len(ds_df['image_name'])):
+                    img_name = ds_df['image_name'][i]
+                    print(img_name)
+
+                    if(img_name not in img_db):
+                        print('\n',ds_df.loc[i], '--- REMOVED from csv file---' ,'\n')
+                        ds_df.drop(i, axis=0, inplace = True)
+                        self.count_corrupt += 1
+                    else:
+                        img = Image.open(os.path.join(self.img_ds_path,img_name))
+                        hash = imagehash.average_hash(img)
+                        if(hash in self.hash_db):
+                            os.remove(os.path.join(self.img_ds_path,img_name))
+                            ds_df.drop(i)
+                            print('\n',img_name, '--- REMOVED from dataset and csv file ---','\n')
+                            self.count_duplicate += 1
+                        else:
+                            self.hash_db.add(hash)
+                        img = None
+                        img_db.remove(img_name)
+
+                if(len(img_db) != 0):
+                    for img_name in img_db:
+                        print(img_name)
+                        os.remove(os.path.join(self.img_ds_path,img_name))
+                        print('\n',img_name, '--- REMOVED from dataset ---','\n')
+
+                print('\n"No. of corrupted csv entries found and deleted : ',self.count_duplicate)
+                print('\n"No. of duplicate images found and deleted : ',self.count_duplicate)
+                print('\nNo of unaccounted files : ',len(img_db))
+
+                ds_df.to_csv(os.path.join(self.csv_file_path,'dataset.csv'), index = False)
+                print('\nUpdated CSV file saved\n')
             else:
-                hash_db.add(hash)
-            img = None
+                print("Image DataSet Path do not exist")
+        else:
+            print("CSV file path do not exist")
+
+if __name__ == "__main__":
+    ds_path = 'D:/Yogendra D/AI_for_any_game_using_CNN/src/game_dataset' 
+    csv_path = 'D:/Yogendra D/AI_for_any_game_using_CNN/src'
+    obj = RemoveDuplicate(ds_path, csv_path)
+    obj.rm_duplicate_img()

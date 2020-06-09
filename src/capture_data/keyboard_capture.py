@@ -58,7 +58,7 @@ if __name__ == "__main__":
         sys.exit()
 
     # The module will start after a defined dalay
-    delay_time = 3
+    delay_time = 6
     util.generate_delay(delay_time)
     start_time = time.time()
     save_img_path = 'D:/Yogendra D/AI_for_any_game_using_CNN/src/game_dataset' 
