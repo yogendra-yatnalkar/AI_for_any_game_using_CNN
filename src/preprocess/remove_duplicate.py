@@ -5,12 +5,15 @@ import pandas as pd
 
 class RemoveDuplicate:
     
-    def __init__(self,img_ds_path,csv_file_path,csv_file_name = 'dataset.csv'):
+    def __init__(self,img_ds_path, csv_file_path = None, csv_file_name = 'dataset.csv'):
         self.img_ds_path = img_ds_path
         self.hash_db = set()
         self.count_duplicate = 0
         self.count_corrupt = 0
-        self.csv_file_path = csv_file_path
+        if(csv_file_path == None):
+            self.csv_file_path = os.path.dirname(img_ds_path) 
+        else:
+            self.csv_file_path = csv_file_path
         self.csv_file_name = csv_file_name
 
     def rm_duplicate_img(self):
@@ -57,9 +60,3 @@ class RemoveDuplicate:
                 print("Image DataSet Path do not exist")
         else:
             print("CSV file path do not exist")
-
-if __name__ == "__main__":
-    ds_path = 'D:/Yogendra D/AI_for_any_game_using_CNN/src/game_dataset' 
-    csv_path = 'D:/Yogendra D/AI_for_any_game_using_CNN/src'
-    obj = RemoveDuplicate(ds_path, csv_path)
-    obj.rm_duplicate_img()

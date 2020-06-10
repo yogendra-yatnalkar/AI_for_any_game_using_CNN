@@ -44,8 +44,8 @@ def main():
     
     ds_path = 'D:/Yogendra D/AI_for_any_game_using_CNN/src/game_dataset' 
     csv_path = 'D:/Yogendra D/AI_for_any_game_using_CNN/src'
-    obj = RemoveDuplicate(ds_path, csv_path)
-    obj.rm_duplicate_img()
+    rm_obj = RemoveDuplicate(ds_path)
+    rm_obj.rm_duplicate_img()
 
     end_time = time.time()
     print("Time required for execution : ", end_time - start_time)

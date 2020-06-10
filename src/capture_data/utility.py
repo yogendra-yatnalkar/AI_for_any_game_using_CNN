@@ -58,3 +58,4 @@ class Utility:
         if('temp.csv' in files):
             os.remove(os.path.join(csv_save_path, 'temp.csv'))
             print("temp.csv - Deleted")
+            

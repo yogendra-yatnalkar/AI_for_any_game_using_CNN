@@ -4,7 +4,7 @@ import time
 
 class SaveFile:
 
-    def __init__(self, path = None):
+    def __init__(self, path):
         self.path = path # directory path where the image needs to be saved
         self.height = 700
         self.width = 700
@@ -38,14 +38,3 @@ class SaveFile:
         # storing to the parent folder of images
         pd_df.to_csv(os.path.join(save_df_path, 'temp.csv'), index = False)
             # save the in-memory df to csv
-
-if __name__ == "__main__": # for testing this file
-    start_time = time.time()
-    obj = SaveFile('../game_dataset/')
-    img = cv2.imread('test/test_image.jpg')
-    img_name = obj.get_image_name()
-    print(img_name)
-    obj.save_image(img)
-    end_time = time.time()
-    print("Time Required : ", end_time - start_time)
-    obj.display_image('test_img',img)   
