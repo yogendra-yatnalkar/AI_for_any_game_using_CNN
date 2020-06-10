@@ -30,7 +30,7 @@ class RemoveDuplicate:
                         self.count_corrupt += 1
                     else:
                         img = Image.open(os.path.join(self.img_ds_path,img_name))
-                        hash = imagehash.average_hash(img)
+                        hash = imagehash.phash(img)
                         if(hash in self.hash_db):
                             os.remove(os.path.join(self.img_ds_path,img_name))
                             ds_df.drop(i, axis=0, inplace = True)

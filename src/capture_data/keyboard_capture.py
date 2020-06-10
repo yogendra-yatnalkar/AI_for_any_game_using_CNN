@@ -1,15 +1,16 @@
 ''' Note: ScreenCapture and SaveImage class will be integrated in this file. '''
+import sys
+sys.path.append('D:/Yogendra D/AI_for_any_game_using_CNN/src/capture_data')
 
-from pynput import keyboard
-import time
 import pandas as pd
 from save_file import SaveFile
 from screen_capture import ScreenCapture
 
 # should be in future main
+from pynput import keyboard
 from utility import Utility
 import gc
-import sys
+import time
 
 class KeyboardCapture:
 
@@ -24,15 +25,42 @@ class KeyboardCapture:
         # sv_file_obj --> save file object
         self.save_path = save_path
 
+        self.pause_flag = 1 
+        self.count_flag = 1  # decides the program will pause keyboard capture or not
+        self.thresh = 8# set threshold when same key is pressed continiously
+        self.cnt = 0
+        self.hist_key = None # Store the last pressed key to count the no of times a key is pressed
+
+    def set_thresh(self, thresh_val):
+        self.thresh = thresh_val
+
     def on_press(self, key):
+        if(self.hist_key == key):
+            self.cnt += 1
+        else:
+            self.cnt = 0
+        if(self.cnt >= self.thresh):
+            self.count_flag = 0
+        else:
+            self.count_flag = 1
+        self.hist_key = key
+        print('\n',self.count_flag,end = ' ')
+
         if(key != keyboard.Key.esc):
-            self.key_pressed.add(key)
-            sc_grab = self.sc_cap_obj.image_grab() # screen grab
-            img_name = self.sv_file_obj.save_image(sc_grab)  # save the screen to disk
-            key_pressed_list = list(self.key_pressed)
-            self.data_set.append({'image_name': img_name, 'action': key_pressed_list})
-            key_pressed_list = []
-            print(img_name, self.key_pressed)
+            if(key == keyboard.Key.alt_r):
+                if(self.pause_flag == 1):
+                    self.pause_flag = 0
+                else:
+                    self.pause_flag = 1
+            print(self.pause_flag)
+            if(self.count_flag == 1 and self.pause_flag == 1 and key != keyboard.Key.alt_r):
+                self.key_pressed.add(key)
+                sc_grab = self.sc_cap_obj.image_grab() # screen grab
+                img_name = self.sv_file_obj.save_image(sc_grab)  # save the screen to disk
+                key_pressed_list = list(self.key_pressed)
+                self.data_set.append({'image_name': img_name, 'action': key_pressed_list})
+                key_pressed_list = []
+                print(img_name, self.key_pressed)
 
     def on_release(self,key):
         if(key == keyboard.Key.esc):

@@ -13,7 +13,7 @@ class SaveFile:
         files_list = os.listdir(self.path)
         dir_len = len(files_list)
         files_list = []
-        img_name = str(dir_len + 1) + '.png'
+        img_name = str(dir_len + 1) + '.jpg'
         return img_name
 
     def set_dimensions(self,ht,wt):
